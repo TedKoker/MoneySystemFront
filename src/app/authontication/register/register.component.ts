@@ -14,9 +14,11 @@ export class RegisterComponent implements OnInit {
     if (password === conformPassword) {
       return null;
     } else {
-      return {conformPassword: true};
+      return {passwordDoNotMatch : true};
     }
   });
+
+  emailInValid = false;
 
   authentication = new FormGroup({
     // tslint:disable-next-line: max-line-length
@@ -28,13 +30,25 @@ export class RegisterComponent implements OnInit {
     lastName: new FormControl('', [Validators.required])
   }, this.comparePasswords);
 
+  formSent = false;
+  passwordError = false;
+
   constructor() {  }
 
   ngOnInit() {
   }
 
   register() {
-    console.log(this.authentication);
+    this.formSent = true;
+    this.passwordError = false;
+    console.log(this.authentication.invalid);
+    if (this.authentication.invalid) {
+      if (this.authentication.errors != null && this.authentication.errors.passwordDoNotMatch) {
+        this.passwordError = true;
+      }
+      this.authentication.controls.password.reset();
+      this.authentication.controls.conformPassword.reset();
+    }// else{write the post method}
   }
 
 }
