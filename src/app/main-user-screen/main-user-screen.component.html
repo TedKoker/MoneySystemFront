@@ -1,0 +1,7 @@
+<div *ngIf="moneyService.getMoneyArray()===null">
+  <app-loading></app-loading>
+</div>
+
+<div>
+  <app-money-table *ngIf="moneyService.getMoneyArray()!==null"></app-money-table>
+</div>

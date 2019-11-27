@@ -1,0 +1,51 @@
+<div class="container">
+    <form [formGroup]="addForm" (ngSubmit)="addNew()">
+        <div class="form-row">
+            <div class="form-group col-md-1">
+                <label for="title">Title</label>
+            </div>
+            <div class="form-group col-md-11">
+                <!--If it is not valid, or empty, add to class list: "is-invalid" in ngClass-->
+                <input #title type="text" class="form-control" placeholder="Enter title" formControlName="title">
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-1">
+                <label for="amount">Amount</label>
+            </div>
+            <div class="form-group col-md-2">
+                <input #amount type="text" class="form-control" placeholder="Enter amount" formControlName="amount">
+            </div>
+            <div class="form-group col-md-1">
+                <label for="date">Date</label>
+            </div>
+            <div class="form-group col-md-3">
+                <input #date type="date" class="form-control" placeholder="Enter date" formControlName="date">
+            </div>
+            <div class="form-group col-md-3">
+                <label for="isIncome">Expensive or Income?</label>
+            </div>
+            <div class="form-group col-md-2">
+                <select #isIncome name="isIncome" class="form-control" formControlName="isIncome">
+                    <option value="false">Expensive</option>
+                    <option value="true">Income</option>
+                </select>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-1">
+                <label for="description">Descriptipm</label>
+            </div>
+        </div>
+        <div class="form-row">
+             <div class="form-group col-md-12">
+                <textarea #description class="form-control" placeholder="Enter description" rows="4" cols="50" formControlName="description"></textarea>
+            </div>
+        </div>
+        <div class="form-row">
+            <div class="form-group col-md-1">
+                <input type="submit" value="Add" class="btn btn-primary">
+            </div>
+        </div>
+    </form>
+</div>
