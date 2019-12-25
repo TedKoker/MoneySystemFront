@@ -14,7 +14,7 @@
                 <label for="amount">Amount</label>
             </div>
             <div class="form-group col-md-2">
-                <input #amount type="text" class="form-control" placeholder="Enter amount" formControlName="amount">
+                <input #amount [ngClass]="{'notValid' : true}" type="text" class="form-control" placeholder="Enter amount" formControlName="amount">
             </div>
             <div class="form-group col-md-1">
                 <label for="date">Date</label>
@@ -44,7 +44,7 @@
         </div>
         <div class="form-row">
             <div class="form-group col-md-1">
-                <input type="submit" value="Add" class="btn btn-primary">
+                <input #dataDismis type="submit" data-dismiss="modal" (click)="addNew()" value="Add" class="btn btn-primary">
             </div>
         </div>
     </form>

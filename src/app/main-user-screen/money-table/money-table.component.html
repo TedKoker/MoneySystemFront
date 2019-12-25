@@ -1,4 +1,4 @@
-<table class="table">
+<table class="table" [ngClass]="{'modal-backdrop fade show' : false}">
   <thead class="thead-light">
     <tr>
       <th scope="col">Date</th>
@@ -6,6 +6,7 @@
       <th scope="col">Amount</th>
       <th scope="col">Income or Expensive</th>
       <th scope="col">Description</th>
+      <th scope="col"></th>
     </tr>
   </thead>
   <tbody>
@@ -15,8 +16,46 @@
       <td>{{money.amount}}</td>
       <td>{{money.isIncome ? 'Income' : 'Expender'}}</td>
       <td>{{money.description}}</td>
+      <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#deleteWarning">Delete</button></td>
     </tr>
   </tbody>
 </table>
+<button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
+  Add new
+</button>
+<div class="modal fade bd-example-modal-lg" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog  modal-lg" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLongTitle">Add new</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <app-add></app-add>
+      </div>
+    </div>
+  </div>
+</div>
 
-{{moneyArray.length}}
+<div class="modal fade" id="deleteWarning" tabindex="-1" role="dialog" aria-labelledby="deleteWarningLabel" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="deleteWarningLabel">Warning!!</h5>
+          <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+            <span aria-hidden="true">&times;</span>
+          </button>
+        </div>
+        <div class="modal-body">
+          This action will delete this line forever
+          aru you sure that you want to do that?
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Hell no!</button>
+          <button type="button" class="btn btn-primary" (click)="deleteLine()">Yes</button>
+        </div>
+      </div>
+    </div>
+  </div>

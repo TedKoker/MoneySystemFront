@@ -14,5 +14,15 @@ export class MainUserScreenComponent implements OnInit {
   ngOnInit() {
     this.moneyService.getMonth();
     this.moneyArray = this.moneyArray != null ? this.moneyService.getMoneyArray() : null;
+    this.moneyService.addedNew.subscribe((data) => {
+      this.moneyArray = null;
+      this.moneyService.getMonth();
+    });
   }
+
+  deleteLine(){
+    
+  }
+
+
 }

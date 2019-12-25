@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { HttpHeaders, HttpClient } from '@angular/common/http';
 import { UserService } from './user.service';
 import { MoneyRequest } from 'src/models/addRequest';
@@ -8,6 +8,7 @@ import { JwtHelperService } from '@auth0/angular-jwt';
 export class MoneyService {
     private rootUrl = 'https://localhost:44318/api';
     private moneyArray: MoneyRequest[];
+    public addedNew = new EventEmitter<MoneyRequest>();
 
     constructor(private userService: UserService, private http: HttpClient) {}
     jwt = new JwtHelperService();
@@ -29,11 +30,13 @@ export class MoneyService {
         this.http.post<MoneyRequest>(sourceUrl, addRequesr, a) //, addRequesr,{headers}
         .subscribe((data) => {
             console.log('success');
+            this.addedNew.emit(data);
         },
         (err) => {console.log(err)} );
     }
 
     getMonth() {
+        this.moneyArray = null;
         const sourceUrl = this.rootUrl + '/MoneyDetale';
         const test = 'Bearer '  + localStorage.getItem('token');
         const aheaders = new HttpHeaders({

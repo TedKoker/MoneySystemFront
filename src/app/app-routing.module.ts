@@ -17,11 +17,6 @@ const routes: Routes = [
     component: LoginComponent
   },
   {
-    path: 'addNew',
-    component: AddComponent,
-    canActivate: [AuthGuard]
-  },
-  {
     path: 'moneyPerMonth',
     component: MainUserScreenComponent,
     canActivate: [AuthGuard]

@@ -1,5 +1,6 @@
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import {MatProgressSpinnerModule} from '@angular/material/progress-spinner';
+import {MatDialogModule} from '@angular/material/dialog';
 import { NgModule } from '@angular/core';
 
 @NgModule({
@@ -7,7 +8,8 @@ import { NgModule } from '@angular/core';
     ],
     exports: [
         MatProgressBarModule,
-        MatProgressSpinnerModule
+        MatProgressSpinnerModule,
+        MatDialogModule
     ]
 })
 export class AModule { }
