@@ -22,11 +22,10 @@ export class MoneyService {
             'Access-Control-Allow-Credentials' : 'True',
             'Authorization' : 'Bearer '+ JSON.parse(JSON.stringify(localStorage.getItem('token')))
         });
-        const a = {headers: aheaders , withCredentials: true}; // , Authorization: 'Bearer ' + localStorage.getItem('token')
+        const a = {headers: aheaders , withCredentials: true};
         // tslint:disable-next-line: radix
         addRequesr.amount = parseInt(addRequesr.amount.toString());
         addRequesr.isIncome = String(addRequesr.isIncome) === 'true' ? true : false;
-        // console.log(headers);
         this.http.post<MoneyRequest>(sourceUrl, addRequesr, a) //, addRequesr,{headers}
         .subscribe((data) => {
             console.log('success');
@@ -55,5 +54,22 @@ export class MoneyService {
 
     getMoneyArray() {
         return this.moneyArray != null ? this.moneyArray.slice() : null;
+    }
+
+    deleteLine(addRequesr: MoneyRequest){
+        const sourceUrl = this.rootUrl + '/MoneyDetale';
+        const test = 'Bearer '  + localStorage.getItem('token');
+        const aheaders = new HttpHeaders({
+            'Access-Control-Allow-Origin': 'https://localhost:44318',
+            'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT',
+            'Access-Control-Allow-Headers' : 'True',
+            'Access-Control-Allow-Credentials' : 'True',
+            'Authorization' : 'Bearer '+ JSON.parse(JSON.stringify(localStorage.getItem('token')))
+        });
+        const a = {headers: aheaders , withCredentials: true};
+        // tslint:disable-next-line: radix
+        addRequesr.amount = parseInt(addRequesr.amount.toString());
+        addRequesr.isIncome = String(addRequesr.isIncome) === 'true' ? true : false;
+        // this.http.delete(sourceUrl,{headers: aheaders},)
     }
 }
