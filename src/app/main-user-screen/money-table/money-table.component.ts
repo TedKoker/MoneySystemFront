@@ -11,6 +11,7 @@ import { AddComponent } from './add/add.component';
 })
 export class MoneyTableComponent implements OnInit {
   private moneyArray: MoneyRequest[];
+  private itamToDelete: MoneyRequest = null;
 
   constructor(private moneyService: MoneyService, public dialog: MatDialog) { }
 
@@ -18,4 +19,15 @@ export class MoneyTableComponent implements OnInit {
     this.moneyArray = this.moneyService.getMoneyArray();
   }
 
+  putItamToDelete(itamToPut: MoneyRequest) {
+    this.itamToDelete = itamToPut;
+  }
+
+  releaseItam() {
+    this.itamToDelete = null;
+  }
+
+  deleteLine() {
+    this.moneyService.deleteLine(this.itamToDelete);
+  }
 }

@@ -16,7 +16,7 @@
       <td>{{money.amount}}</td>
       <td>{{money.isIncome ? 'Income' : 'Expender'}}</td>
       <td>{{money.description}}</td>
-      <td><button type="button" class="btn btn-light" data-toggle="modal" data-target="#deleteWarning">Delete</button></td>
+      <td><button type="button" class="btn btn-light" (click)="putItamToDelete(money)" data-toggle="modal" data-target="#deleteWarning">Delete</button></td>
     </tr>
   </tbody>
 </table>
@@ -53,8 +53,8 @@
           aru you sure that you want to do that?
         </div>
         <div class="modal-footer">
-          <button type="button" class="btn btn-secondary" data-dismiss="modal">Hell no!</button>
-          <button type="button" class="btn btn-primary" (click)="deleteLine()">Yes</button>
+          <button type="button" class="btn btn-secondary" (click)="releaseItam()" data-dismiss="modal">Hell no!</button>
+          <button type="button" class="btn btn-primary" (click)="deleteLine()" data-dismiss="modal">Delete</button>
         </div>
       </div>
     </div>

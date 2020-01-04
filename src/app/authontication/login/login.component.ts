@@ -37,6 +37,7 @@ export class LoginComponent implements OnInit {
         jsonData.set(control, this.authentication.get(control).value);
       }
       const obj = [...jsonData].reduce((o, [key, value]) => (o[key] = value, o), {});
+      console.log(obj);
 
       const logIn = obj as LogInRequest;
       this.aouhtenticationService.LogIn(logIn);

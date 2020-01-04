@@ -7,7 +7,7 @@ import {ReactiveFormsModule} from '@angular/forms';
 import { AuthonticationComponent } from './authontication/authontication.component';
 import { LoginComponent } from './authontication/login/login.component';
 import { RegisterComponent } from './authontication/register/register.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { MainUserScreenComponent } from './main-user-screen/main-user-screen.component';
 import { AddComponent } from './main-user-screen/money-table/add/add.component';
 import { NavBarComponent } from './nav-bar/nav-bar.component';
@@ -16,6 +16,7 @@ import { LoadingComponent } from './generalComponents/loading/loading.component'
 import { AModule } from './aMaterial.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MoneyTableComponent } from './main-user-screen/money-table/money-table.component';
+import { AuthenticationService } from 'src/services/authontication.service';
 
 @NgModule({
   declarations: [
@@ -44,7 +45,8 @@ import { MoneyTableComponent } from './main-user-screen/money-table/money-table.
     BrowserAnimationsModule,
     AModule
   ],
-  providers: [],
+  providers: [
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

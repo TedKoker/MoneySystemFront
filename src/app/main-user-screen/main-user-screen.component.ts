@@ -20,9 +20,7 @@ export class MainUserScreenComponent implements OnInit {
     });
   }
 
-  deleteLine(){
-    
-  }
+  
 
 
 }

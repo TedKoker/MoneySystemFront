@@ -1,8 +1,10 @@
 import { Injectable, EventEmitter } from '@angular/core';
-import { HttpHeaders, HttpClient } from '@angular/common/http';
+import { HttpHeaders, HttpClient, HttpRequest } from '@angular/common/http';
+// import {RequestOptions} from '@angular/http';
 import { UserService } from './user.service';
 import { MoneyRequest } from 'src/models/addRequest';
 import { JwtHelperService } from '@auth0/angular-jwt';
+import { AuthenticationService } from './authontication.service';
 
 @Injectable({providedIn: 'root'})
 export class MoneyService {
@@ -10,7 +12,7 @@ export class MoneyService {
     private moneyArray: MoneyRequest[];
     public addedNew = new EventEmitter<MoneyRequest>();
 
-    constructor(private userService: UserService, private http: HttpClient) {}
+    constructor(private userService: UserService, private http: HttpClient, private auothService: AuthenticationService) {}
     jwt = new JwtHelperService();
     addNew(addRequesr: MoneyRequest) {
         const sourceUrl = this.rootUrl + '/MoneyDetale';
@@ -34,7 +36,7 @@ export class MoneyService {
         (err) => {console.log(err)} );
     }
 
-    getMonth() {
+    getMonth(month? :Number) {
         this.moneyArray = null;
         const sourceUrl = this.rootUrl + '/MoneyDetale';
         const test = 'Bearer '  + localStorage.getItem('token');
@@ -43,7 +45,7 @@ export class MoneyService {
             'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT',
             'Access-Control-Allow-Headers' : 'True',
             'Access-Control-Allow-Credentials' : 'True',
-            'Authorization' : 'Bearer ' + JSON.parse(JSON.stringify(localStorage.getItem('token')))
+            'Authorization' : 'Bearer ' + this.auothService.getToken()
         });
         const a = {headers: aheaders , withCredentials: true};
         this.http.get<MoneyRequest[]>(sourceUrl, a).subscribe((data: MoneyRequest[]) => {
@@ -64,12 +66,17 @@ export class MoneyService {
             'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT',
             'Access-Control-Allow-Headers' : 'True',
             'Access-Control-Allow-Credentials' : 'True',
-            'Authorization' : 'Bearer '+ JSON.parse(JSON.stringify(localStorage.getItem('token')))
+            'Authorization' : 'Bearer ' + JSON.parse(JSON.stringify(localStorage.getItem('token')))
         });
-        const a = {headers: aheaders , withCredentials: true};
+        const a = {headers: aheaders , body: addRequesr};
         // tslint:disable-next-line: radix
         addRequesr.amount = parseInt(addRequesr.amount.toString());
         addRequesr.isIncome = String(addRequesr.isIncome) === 'true' ? true : false;
-        // this.http.delete(sourceUrl,{headers: aheaders},)
+        this.http.delete(sourceUrl, a).subscribe(() => {
+            console.log('sucess');
+            this.addedNew.emit();
+        },
+        (err) => { console.log(err);
+        } );
     }
 }
