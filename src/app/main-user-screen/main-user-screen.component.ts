@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MoneyRequest } from 'src/models/addRequest';
 import { MoneyService } from 'src/services/moneyService';
+import { AuthenticationService } from 'src/services/authontication.service';
 
 @Component({
   selector: 'app-main-user-screen',
@@ -19,8 +20,4 @@ export class MainUserScreenComponent implements OnInit {
       this.moneyService.getMonth();
     });
   }
-
-  
-
-
 }

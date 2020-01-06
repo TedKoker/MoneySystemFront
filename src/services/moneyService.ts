@@ -22,7 +22,7 @@ export class MoneyService {
             'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT',
             'Access-Control-Allow-Headers' : 'True',
             'Access-Control-Allow-Credentials' : 'True',
-            'Authorization' : 'Bearer '+ JSON.parse(JSON.stringify(localStorage.getItem('token')))
+            'Authorization' : 'Bearer ' + this.auothService.getToken()
         });
         const a = {headers: aheaders , withCredentials: true};
         // tslint:disable-next-line: radix
@@ -66,7 +66,7 @@ export class MoneyService {
             'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT',
             'Access-Control-Allow-Headers' : 'True',
             'Access-Control-Allow-Credentials' : 'True',
-            'Authorization' : 'Bearer ' + JSON.parse(JSON.stringify(localStorage.getItem('token')))
+            'Authorization' : 'Bearer ' + this.auothService.getToken()
         });
         const a = {headers: aheaders , body: addRequesr};
         // tslint:disable-next-line: radix

@@ -16,7 +16,7 @@ import { LoadingComponent } from './generalComponents/loading/loading.component'
 import { AModule } from './aMaterial.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MoneyTableComponent } from './main-user-screen/money-table/money-table.component';
-import { AuthenticationService } from 'src/services/authontication.service';
+import { AngularFontAwesomeModule } from 'angular-font-awesome';
 
 @NgModule({
   declarations: [
@@ -31,6 +31,7 @@ import { AuthenticationService } from 'src/services/authontication.service';
     MoneyTableComponent
   ],
   imports: [
+    ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,
     ReactiveFormsModule,
@@ -43,7 +44,8 @@ import { AuthenticationService } from 'src/services/authontication.service';
       }
     }),
     BrowserAnimationsModule,
-    AModule
+    AModule,
+    AngularFontAwesomeModule
   ],
   providers: [
   ],

@@ -20,6 +20,28 @@
     </tr>
   </tbody>
 </table>
+<div class="container">
+  <div class="row">
+    <div class="col" style="text-align: left;">
+      <button class="btn btn-secondary btn-arrow-left btn-fix"> Prev</button>
+    </div>
+    <form [formGroup]="date" (ngSubmit)="onSubmit()">
+    <div class="">
+          <div class="input-group mb-1">
+             <input type="text" formControlName="month" class="form-control month-fix" [value]="moneyArray[0].date | date : 'MM'">
+             <div class="input-group-append">
+              <span class="input-group-text" id="basic-addon2">/</span> 
+            </div>
+            <input type="text" formControlName="year" class="form-control year-fix" [value]="moneyArray[0].date | date : 'yyyy'">
+          </div>
+      </div>
+      <input type="submit" value="test">
+    </form>
+    <div class="col align-self-end" style="text-align: right;">
+      <button class="btn btn-secondary btn-arrow-right btn-fix"> Next</button>
+    </div>
+  </div>
+</div>
 <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#exampleModalLong">
   Add new
 </button>
@@ -38,7 +60,6 @@
     </div>
   </div>
 </div>
-
 <div class="modal fade" id="deleteWarning" tabindex="-1" role="dialog" aria-labelledby="deleteWarningLabel" aria-hidden="true">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
