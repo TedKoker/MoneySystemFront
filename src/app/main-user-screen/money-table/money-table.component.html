@@ -23,22 +23,21 @@
 <div class="container">
   <div class="row">
     <div class="col" style="text-align: left;">
-      <button class="btn btn-secondary btn-arrow-left btn-fix"> Prev</button>
+      <button class="btn btn-secondary btn-arrow-left btn-fix" (click)="oneMonthPrev()" [disabled]="disablePerv()"> Prev</button>
     </div>
     <form [formGroup]="date" (ngSubmit)="onSubmit()">
     <div class="">
           <div class="input-group mb-1">
-             <input type="text" formControlName="month" class="form-control month-fix" [value]="moneyArray[0].date | date : 'MM'">
+             <input type="text" formControlName="month" (focus)="focusOnMonth()" (blur)="notFocusOnMonth()" class="form-control month-fix">
              <div class="input-group-append">
               <span class="input-group-text" id="basic-addon2">/</span> 
             </div>
-            <input type="text" formControlName="year" class="form-control year-fix" [value]="moneyArray[0].date | date : 'yyyy'">
+            <input type="text" formControlName="year" (focus)="focusOnYear()" (blur)="notFocusOnYear()" class="form-control year-fix">
           </div>
       </div>
-      <input type="submit" value="test">
     </form>
     <div class="col align-self-end" style="text-align: right;">
-      <button class="btn btn-secondary btn-arrow-right btn-fix"> Next</button>
+      <button class="btn btn-secondary btn-arrow-right btn-fix" (click)="oneMonthNext()" [disabled]="disableNext()"> Next</button>
     </div>
   </div>
 </div>
@@ -80,3 +79,20 @@
       </div>
     </div>
   </div>
+
+  <ng-template #content let-c="close" let-d="dismiss">
+    <div class="modal-header">
+      <h4 class="modal-title" id="modal-basic-title">Hi there!</h4>
+      <button type="button" class="close" aria-label="Close" (click)="d('Cross click')">
+        <span aria-hidden="true">&times;</span>
+      </button>
+    </div>
+    <div class="modal-body">
+      <p>Your date was invalid!</p>
+    </div>
+    <div class="modal-footer">
+      <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Got it!</button>
+    </div>
+  </ng-template>
+  
+  <!--<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>-->

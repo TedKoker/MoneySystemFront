@@ -17,6 +17,7 @@ import { AModule } from './aMaterial.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MoneyTableComponent } from './main-user-screen/money-table/money-table.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
+import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
 
 @NgModule({
   declarations: [
@@ -31,6 +32,7 @@ import { AngularFontAwesomeModule } from 'angular-font-awesome';
     MoneyTableComponent
   ],
   imports: [
+    NgbModule,
     ReactiveFormsModule,
     BrowserModule,
     AppRoutingModule,

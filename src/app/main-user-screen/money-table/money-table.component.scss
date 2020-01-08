@@ -78,3 +78,7 @@ body { /* just for this demo. */
 .year-fix{
     width: 4em !important;
 }
+
+.modal.show {
+    display:block;
+  }
