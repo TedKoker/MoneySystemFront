@@ -1,4 +1,5 @@
-import { Component, OnInit, Output, EventEmitter, AfterViewInit, AfterContentInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter, AfterViewInit,
+  AfterContentInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
 import { MoneyRequest } from 'src/models/addRequest';
 import { MoneyService } from 'src/services/moneyService';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,6 +19,9 @@ export class MoneyTableComponent implements OnInit {
   private moneyArray: MoneyRequest[];
   private monthFocused = false;
   private yearFocuse = false;
+  private outAnimation: boolean;
+  private leftAnimation: boolean;
+  private rightAnimation: boolean;
   private lastValueMonth: string;
   private lastValueYear: string;
 
@@ -70,15 +74,21 @@ export class MoneyTableComponent implements OnInit {
    }
 
   ngOnInit() {
+    this.leftAnimation = false;
+    this.rightAnimation = false;
     this.moneyArray = this.moneyService.getMoneyArray();
-    this.date.get('month').setValue((new Date(this.moneyArray[0].date).getMonth() + 1).toString());
-    this.date.get('year').setValue(new Date(this.moneyArray[0].date).getFullYear().toString());
+    this.date.get('month').setValue(this.moneyService.month.toString());
+    this.date.get('year').setValue(this.moneyService.year.toString());
     this.lastValueMonth = this.date.get('month').value;
     this.lastValueYear = this.date.get('year').value;
   }
 
   open(content) { // open modal
-    this.modalService.open(content);
+    this.modalService.open(content,  {backdropClass: 'light-blue-backdrop'});
+    /**
+     * The second patameter in this.modalService.open,
+     * is a class I am bulding in this component's style file
+     */
   }
 
   closeModal() { // close all open modals
@@ -99,7 +109,9 @@ export class MoneyTableComponent implements OnInit {
 
   onSubmit() {
     if (this.date.valid) {
-      console.log(this.date);
+      setTimeout(() => {
+        this.moneyService.getMonth(Number(this.lastValueMonth), Number(this.lastValueYear));
+      }, 500);
     } else {
       this.date.get('month').setValue(this.lastValueMonth);
       this.date.get('year').setValue(this.lastValueYear);
@@ -155,7 +167,7 @@ export class MoneyTableComponent implements OnInit {
   }
 
   notFocusOnYear() {
-    this.yearFocuse = false;
+    this.leftAnimation = true;
     if (this.date.valid) {
       this.lastValueYear = this.date.get('year').value;
     }
@@ -171,10 +183,16 @@ export class MoneyTableComponent implements OnInit {
     const year = Number(this.date.get('year').value);
     if (month > 1) {
       this.date.get('month').setValue((month - 1).toString());
+      this.lastValueMonth = this.date.get('month').value;
+      this.lastValueYear = this.date.get('year').value;
     } else {
       this.date.get('month').setValue('12');
       this.date.get('year').setValue((year - 1).toString());
+      this.lastValueMonth = this.date.get('month').value;
+      this.lastValueYear = this.date.get('year').value;
     }
+    this.rightAnimation = true;
+    this.onSubmit();
   }
 
   oneMonthNext() {
@@ -182,10 +200,16 @@ export class MoneyTableComponent implements OnInit {
     const year = Number(this.date.get('year').value);
     if (month < 12) {
       this.date.get('month').setValue((month + 1).toString());
+      this.lastValueMonth = this.date.get('month').value;
+      this.lastValueYear = this.date.get('year').value;
     } else {
       this.date.get('month').setValue('1');
       this.date.get('year').setValue((year + 1).toString());
+      this.lastValueMonth = this.date.get('month').value;
+      this.lastValueYear = this.date.get('year').value;
     }
+    this.leftAnimation = true;
+    this.onSubmit();
   }
 
   disableNext(): boolean {

@@ -1,4 +1,6 @@
-<table class="table" [ngClass]="{'modal-backdrop fade show' : false}">
+<div class="tableEnterAnimation" [ngClass]="{'fadeLeftAnimation' : leftAnimation, 'fadeRightAnimation' : rightAnimation}"> 
+
+<table class="table">
   <thead class="thead-light">
     <tr>
       <th scope="col">Date</th>
@@ -94,5 +96,5 @@
       <button type="button" class="btn btn-outline-dark" (click)="closeModal()">Got it!</button>
     </div>
   </ng-template>
-  
+</div>
   <!--<button class="btn btn-lg btn-outline-primary" (click)="open(content)">Launch demo modal</button>-->

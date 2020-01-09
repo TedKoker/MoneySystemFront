@@ -79,6 +79,90 @@ body { /* just for this demo. */
     width: 4em !important;
 }
 
-.modal.show {
-    display:block;
-  }
+.tableAnimation {
+    animation: fadeOutTable 0.5s;
+}
+
+.tableEnterAnimation {
+    animation: fadeInTable 0.3s;
+}
+
+.fadeRightAnimation {
+    animation: fadeRight 0.7s;
+}
+
+.fadeLeftAnimation {
+    animation: fadeLeft 0.7s;
+}
+
+@keyframes fadeOutTable {
+    from{
+        opacity: 1;
+        transform: scale(1);
+    }
+    to{
+        opacity: 0.2;
+        transform: scale(0);
+    }
+}
+
+@keyframes fadeInTable {
+    from {
+        opacity: 0.2;
+        transform: scale(0);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+@keyframes fadeRight {
+    0% {
+        transform: scaleX(0);
+        transform: scale(1);
+        opacity: 1;
+    }
+    25% {
+        transform: scaleX(0);
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: scaleX(10);
+        transform: scale(0.8);
+        opacity: 0.6;
+    }
+    100% {
+        
+        transform: scaleX(10);
+        transform: scale(0.8);
+        opacity: 0.2;
+        transform: translate3d(100%, 0, 0);
+    }
+}
+
+@keyframes fadeLeft {
+    0% {
+        transform: scaleX(0);
+        transform: scale(1);
+        opacity: 1;
+    }
+    25% {
+        transform: scaleX(0);
+        transform: scale(1);
+        opacity: 0.6;
+    }
+    50% {
+        transform: scaleX(10);
+        transform: scale(0.8);
+        opacity: 0.6;
+    }
+    100% {
+        
+        transform: scaleX(10);
+        transform: scale(0.8);
+        opacity: 0.2;
+        transform: translate3d(-100%, 0, 0);
+    }
+}

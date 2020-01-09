@@ -11,6 +11,8 @@ export class MoneyService {
     private rootUrl = 'https://localhost:44318/api';
     private moneyArray: MoneyRequest[];
     public addedNew = new EventEmitter<MoneyRequest>();
+    public month = new Date().getMonth()+1;
+    public year = new Date().getFullYear();
 
     constructor(private userService: UserService, private http: HttpClient, private auothService: AuthenticationService) {}
     jwt = new JwtHelperService();
@@ -36,9 +38,17 @@ export class MoneyService {
         (err) => {console.log(err)} );
     }
 
-    getMonth(month? :Number) {
+    getMonth(month?: number, year?: number) {
         this.moneyArray = null;
-        const sourceUrl = this.rootUrl + '/MoneyDetale';
+        let sourceUrl = this.rootUrl + '/MoneyDetale';
+        if (month !== undefined && year !== undefined) {
+            this.month = month;
+            this.year = year;
+            sourceUrl += '/' + month + '/' + year;
+        } else {
+            this.month = new Date().getMonth() + 1;
+            this.year = new Date().getFullYear();
+        }
         const test = 'Bearer '  + localStorage.getItem('token');
         const aheaders = new HttpHeaders({
             'Access-Control-Allow-Origin': 'https://localhost:44318',
@@ -49,7 +59,6 @@ export class MoneyService {
         });
         const a = {headers: aheaders , withCredentials: true};
         this.http.get<MoneyRequest[]>(sourceUrl, a).subscribe((data: MoneyRequest[]) => {
-            console.log('hh');
             this.moneyArray = data;
         });
     }
