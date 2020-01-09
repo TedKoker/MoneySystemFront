@@ -1,5 +1,5 @@
-<div class="tableEnterAnimation" [ngClass]="{'fadeLeftAnimation' : leftAnimation, 'fadeRightAnimation' : rightAnimation}"> 
-
+<div class="tableEnterAnimation"  [ngClass]="{'fadeLeftAnimation' : leftAnimation, 'fadeRightAnimation' : rightAnimation}"> 
+<!--class="deleteLine"-->
 <table class="table">
   <thead class="thead-light">
     <tr>
@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let money of moneyArray">
+    <tr [ngClass]="{'deleteLine' : money===itamToDelete && itamDeleting}" *ngFor="let money of moneyArray">
       <th scope="row">{{money.date | date :'d.MM'}}</th>
       <td>{{money.title}}</td>
       <td>{{money.amount}}</td>

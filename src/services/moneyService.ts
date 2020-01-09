@@ -83,7 +83,7 @@ export class MoneyService {
         addRequesr.isIncome = String(addRequesr.isIncome) === 'true' ? true : false;
         this.http.delete(sourceUrl, a).subscribe(() => {
             console.log('sucess');
-            this.addedNew.emit();
+            // this.addedNew.emit();
         },
         (err) => { console.log(err);
         } );

@@ -15,13 +15,23 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
   providers: [NgbModalConfig, NgbModal],
   styleUrls: ['./money-table.component.scss']
 })
+/**
+ * TO DO:
+ *
+ *  1) Fix the table so that when the user adding itam, it will not recall to the server.
+ *  2) Insert the last page that the user visited to the cookies,
+ *      and reload it from there in ngOnInit
+ */
 export class MoneyTableComponent implements OnInit {
   private moneyArray: MoneyRequest[];
+
   private monthFocused = false;
   private yearFocuse = false;
   private outAnimation: boolean;
   private leftAnimation: boolean;
   private rightAnimation: boolean;
+  private itamDeleting: boolean;
+
   private lastValueMonth: string;
   private lastValueYear: string;
 
@@ -76,6 +86,7 @@ export class MoneyTableComponent implements OnInit {
   ngOnInit() {
     this.leftAnimation = false;
     this.rightAnimation = false;
+    this.itamDeleting = false;
     this.moneyArray = this.moneyService.getMoneyArray();
     this.date.get('month').setValue(this.moneyService.month.toString());
     this.date.get('year').setValue(this.moneyService.year.toString());
@@ -104,7 +115,12 @@ export class MoneyTableComponent implements OnInit {
   }
 
   deleteLine() {
-    this.moneyService.deleteLine(this.itamToDelete);
+    this.itamDeleting = true;
+    setTimeout(() => {
+      this.moneyArray.splice(this.moneyArray.indexOf(this.itamToDelete), 1);
+      this.moneyService.deleteLine(this.itamToDelete);
+      this.itamDeleting = false;
+    }, 900);
   }
 
   onSubmit() {
