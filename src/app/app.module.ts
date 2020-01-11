@@ -18,6 +18,7 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { MoneyTableComponent } from './main-user-screen/money-table/money-table.component';
 import { AngularFontAwesomeModule } from 'angular-font-awesome';
 import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
+import {CookieService} from 'ngx-cookie-service';
 
 @NgModule({
   declarations: [
@@ -50,6 +51,7 @@ import {NgbModule} from '@ng-bootstrap/ng-bootstrap';
     AngularFontAwesomeModule
   ],
   providers: [
+    CookieService
   ],
   bootstrap: [AppComponent]
 })

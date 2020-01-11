@@ -7,6 +7,7 @@ import { AddComponent } from './add/add.component';
 import { FormGroup, FormControl, Validators, Validator } from '@angular/forms';
 import { error } from 'util';
 import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
+import { CookieService } from 'ngx-cookie-service';
 
 
 @Component({
@@ -82,7 +83,7 @@ export class MoneyTableComponent implements OnInit, OnDestroy {
   }, this.validateDate);
 
   constructor(private moneyService: MoneyService, public dialog: MatDialog,
-    config: NgbModalConfig, private modalService: NgbModal) {
+    config: NgbModalConfig, private modalService: NgbModal, private cookieService: CookieService) {
       config.backdrop = 'static';
       config.keyboard = false;
    }
@@ -92,8 +93,14 @@ export class MoneyTableComponent implements OnInit, OnDestroy {
     this.rightAnimation = false;
     this.itamDeleting = false;
     this.moneyArray = this.moneyService.getMoneyArray();
-    this.date.get('month').setValue(this.moneyService.month.toString());
-    this.date.get('year').setValue(this.moneyService.year.toString());
+    if (!this.cookieService.get('month')) {
+      this.cookieService.set('month', (new Date().getMonth() + 1).toString(), 2);
+    }
+    if (!this.cookieService.get('year')) {
+      this.cookieService.set('year', new Date().getFullYear().toString(), 2);
+    }
+    this.date.get('month').setValue(this.cookieService.get('month'));
+    this.date.get('year').setValue(this.cookieService.get('year'));
     this.lastValueMonth = this.date.get('month').value;
     this.lastValueYear = this.date.get('year').value;
 
@@ -133,9 +140,9 @@ export class MoneyTableComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    this.moneyArrayTracking.unsubscribe();
+    /*this.moneyArrayTracking.unsubscribe();
     this.moneyService.addedNew.unsubscribe();
-    this.moneyService.newAddedToDataBase.unsubscribe();
+    this.moneyService.newAddedToDataBase.unsubscribe();*/
   }
 
   addInOrder(itam: MoneyRequest, array: Array<MoneyRequest>, index: number) {
@@ -180,11 +187,15 @@ export class MoneyTableComponent implements OnInit, OnDestroy {
   onSubmit() {
     if (this.date.valid) {
       setTimeout(() => {
-        this.moneyService.getMonth(Number(this.lastValueMonth), Number(this.lastValueYear));
+        this.cookieService.delete('month');
+        this.cookieService.set('month', this.date.get('month').value);
+        this.cookieService.delete('year');
+        this.cookieService.set('year', this.date.get('year').value);
+        this.moneyService.getMonth(Number(this.cookieService.get('month')), Number(this.cookieService.get('year')));
       }, 500);
     } else {
-      this.date.get('month').setValue(this.lastValueMonth);
-      this.date.get('year').setValue(this.lastValueYear);
+      this.date.get('month').setValue(this.cookieService.get('month'));
+      this.date.get('year').setValue(this.cookieService.get('year'));
       this.open(this.invalidDateModal); // this func open the modal
     }
   }
