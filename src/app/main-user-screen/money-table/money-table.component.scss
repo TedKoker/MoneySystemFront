@@ -99,6 +99,23 @@ body { /* just for this demo. */
     animation: deleteLineAnimation 1s;
 }
 
+.newItam {
+    animation: newItamAnimation 1s;
+}
+
+@keyframes newItamAnimation {
+    0% {
+        transform: scaleY(0.2);
+        transform: translateX(-100%);
+    }
+    50% {
+        transform: scaleY(0.2);
+    }
+    100% {
+        transform: scaleY(1);
+    }
+}
+
 @keyframes deleteLineAnimation {
     0% {
         transform: scaleY(1);

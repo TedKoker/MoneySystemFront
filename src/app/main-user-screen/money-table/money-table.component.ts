@@ -1,5 +1,5 @@
 import { Component, OnInit, Output, EventEmitter, AfterViewInit,
-  AfterContentInit, ViewChild, ElementRef, TemplateRef } from '@angular/core';
+  AfterContentInit, ViewChild, ElementRef, TemplateRef, OnDestroy, DoCheck } from '@angular/core';
 import { MoneyRequest } from 'src/models/addRequest';
 import { MoneyService } from 'src/services/moneyService';
 import { MatDialog } from '@angular/material/dialog';
@@ -18,7 +18,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
 /**
  * TO DO:
  *
- *  1) Fix the table so that when the user adding itam, it will not recall to the server.
+ *  1) Fix the table so that when the user adding itam, it will not recall to the server. - done
  *  2) Insert the last page that the user visited to the cookies,
  *      and reload it from there in ngOnInit
  */
@@ -34,6 +34,10 @@ export class MoneyTableComponent implements OnInit {
 
   private lastValueMonth: string;
   private lastValueYear: string;
+
+  private newItam: MoneyRequest;
+
+  private moneyArrayTracking = new EventEmitter<MoneyRequest>();
 
   /**
    * If modal is opened thorugh the ts file,
@@ -92,6 +96,46 @@ export class MoneyTableComponent implements OnInit {
     this.date.get('year').setValue(this.moneyService.year.toString());
     this.lastValueMonth = this.date.get('month').value;
     this.lastValueYear = this.date.get('year').value;
+    this.moneyService.addedNew.subscribe((newItam: MoneyRequest) => {
+      const dateAdded = new Date(newItam.date);
+      const exsistingDate = this.moneyArray.length > 0 ? new Date(this.moneyArray[0].date) : null;
+      let addedToArray = false;
+      if (dateAdded.getMonth() + 1 === Number(this.lastValueMonth) && exsistingDate != null) {
+        for (let i = 0; i < this.moneyArray.length && !addedToArray; i++) {
+          if (this.moneyArray[i].date.getDate() > dateAdded.getDate()) {
+            this.moneyArray = this.addInOrder(newItam, this.moneyArray, i);
+            addedToArray = true;
+          }
+      }
+      }
+      if (!addedToArray) {
+        this.moneyArray.push(newItam);
+      }
+      setTimeout(() => {
+        if (addedToArray) {
+          this.moneyArrayTracking.emit(newItam);
+        }
+      }, 1000);
+    });
+
+    this.moneyArrayTracking.subscribe((newItam: MoneyRequest) => {
+      newItam.date = new Date(newItam.date);
+      this.moneyService.addNewToDb(newItam);
+      this.newItam = newItam;
+    });
+
+    this.moneyService.newAddedToDataBase.subscribe((data) => {
+      const index = this.moneyArray.indexOf(this.newItam);
+      this.moneyArray[index] = data;
+    });
+  }
+
+  addInOrder(itam: MoneyRequest, array: Array<MoneyRequest>, index: number) {
+    const newArray = new Array<MoneyRequest>();
+    newArray.push(...array.slice(0, index));
+    newArray.push(itam);
+    newArray.push(...array.slice(index, array.length));
+    return newArray;
   }
 
   open(content) { // open modal
@@ -117,8 +161,10 @@ export class MoneyTableComponent implements OnInit {
   deleteLine() {
     this.itamDeleting = true;
     setTimeout(() => {
+      if (this.moneyArray[this.moneyArray.indexOf(this.itamToDelete)].id !== undefined) {
+        this.moneyService.deleteLine(this.itamToDelete);
+      }
       this.moneyArray.splice(this.moneyArray.indexOf(this.itamToDelete), 1);
-      this.moneyService.deleteLine(this.itamToDelete);
       this.itamDeleting = false;
     }, 900);
   }
@@ -237,5 +283,4 @@ export class MoneyTableComponent implements OnInit {
     return Number(this.date.get('year').value) === 1900
             && Number(this.date.get('month').value) === 1;
   }
-
 }

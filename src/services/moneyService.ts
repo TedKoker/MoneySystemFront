@@ -11,13 +11,14 @@ export class MoneyService {
     private rootUrl = 'https://localhost:44318/api';
     private moneyArray: MoneyRequest[];
     public addedNew = new EventEmitter<MoneyRequest>();
-    public month = new Date().getMonth()+1;
+    public newAddedToDataBase = new EventEmitter<MoneyRequest>();
+    public month = new Date().getMonth() + 1;
     public year = new Date().getFullYear();
 
     constructor(private userService: UserService, private http: HttpClient, private auothService: AuthenticationService) {}
     jwt = new JwtHelperService();
     addNew(addRequesr: MoneyRequest) {
-        const sourceUrl = this.rootUrl + '/MoneyDetale';
+        /*const sourceUrl = this.rootUrl + '/MoneyDetale';
         const test = 'Bearer '  + localStorage.getItem('token');
         const aheaders = new HttpHeaders({
             'Access-Control-Allow-Origin': 'https://localhost:44318',
@@ -33,7 +34,29 @@ export class MoneyService {
         this.http.post<MoneyRequest>(sourceUrl, addRequesr, a) //, addRequesr,{headers}
         .subscribe((data) => {
             console.log('success');
-            this.addedNew.emit(data);
+            // this.addedNew.emit(data);
+        },
+        (err) => {console.log(err)} );*/
+        this.addedNew.emit(addRequesr);
+    }
+
+    addNewToDb(addRequesr: MoneyRequest) {
+        const sourceUrl = this.rootUrl + '/MoneyDetale';
+        const test = 'Bearer '  + localStorage.getItem('token');
+        const aheaders = new HttpHeaders({
+            'Access-Control-Allow-Origin': 'https://localhost:44318',
+            'Access-Control-Allow-Methods': 'GET, POST, DELETE, PUT',
+            'Access-Control-Allow-Headers' : 'True',
+            'Access-Control-Allow-Credentials' : 'True',
+            'Authorization' : 'Bearer ' + this.auothService.getToken()
+        });
+        const a = {headers: aheaders , withCredentials: true};
+        // tslint:disable-next-line: radix
+        addRequesr.amount = parseInt(addRequesr.amount.toString());
+        addRequesr.isIncome = String(addRequesr.isIncome) === 'true' ? true : false;
+        this.http.post<MoneyRequest>(sourceUrl, addRequesr, a) //, addRequesr,{headers}
+        .subscribe((data) => {
+            this.newAddedToDataBase.emit(data);
         },
         (err) => {console.log(err)} );
     }
@@ -59,6 +82,10 @@ export class MoneyService {
         });
         const a = {headers: aheaders , withCredentials: true};
         this.http.get<MoneyRequest[]>(sourceUrl, a).subscribe((data: MoneyRequest[]) => {
+            // tslint:disable-next-line: prefer-for-of
+            for (let i = 0; i < data.length; i++) {
+                data[i].date = new Date(data[i].date);
+            }
             this.moneyArray = data;
         });
     }

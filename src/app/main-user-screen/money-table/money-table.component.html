@@ -12,7 +12,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr [ngClass]="{'deleteLine' : money===itamToDelete && itamDeleting}" *ngFor="let money of moneyArray">
+    <tr [ngClass]="{'deleteLine' : money===itamToDelete && itamDeleting, 'newItam' : money.id===undefined}" *ngFor="let money of moneyArray">
       <th scope="row">{{money.date | date :'d.MM'}}</th>
       <td>{{money.title}}</td>
       <td>{{money.amount}}</td>
