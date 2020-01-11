@@ -11,13 +11,15 @@ import { MoneyRequest } from 'src/models/addRequest';
 })
 export class AddComponent implements OnInit {
 
-  addForm = new FormGroup({
+  addFormControls = {
     title: new FormControl('', [Validators.required, Validators.minLength(3)]),
     description: new FormControl('', []),
     date: new FormControl('', [Validators.required]),
     amount: new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$')]),
     isIncome: new FormControl('false', [Validators.required])
-  });
+  };
+
+  addForm: FormGroup; // This from is builed in the function: createAddFormControls(form: FormGroup)
 
   addFormValid: boolean[];
 
@@ -25,6 +27,7 @@ export class AddComponent implements OnInit {
 
   ngOnInit() {
     this.addFormValid = new Array<boolean>();
+    this.addForm = this.createAddFormControls(this.addForm);
   }
 
   addNew() {
@@ -38,9 +41,21 @@ export class AddComponent implements OnInit {
 
       const add = obj as MoneyRequest;
       this.moneySrvice.addNew(add);
+      this.addForm = this.createAddFormControls(this.addForm);
+
     } else {
       console.log(this.addForm);
     }
 
+  }
+
+  createAddFormControls(form: FormGroup) {
+    form = new FormGroup({});
+    form.addControl('title', new FormControl('', [Validators.required, Validators.minLength(3)]));
+    form.addControl('description', new FormControl('', []));
+    form.addControl('date', new FormControl('', [Validators.required]));
+    form.addControl('amount', new FormControl('', [Validators.required, Validators.pattern('^[0-9]*$')]));
+    form.addControl('isIncome', new FormControl('false', [Validators.required]));
+    return form;
   }
 }

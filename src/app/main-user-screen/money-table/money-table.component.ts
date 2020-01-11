@@ -39,11 +39,7 @@ export class MoneyTableComponent implements OnInit, OnDestroy {
   private newItam: MoneyRequest;
 
   private moneyArrayTracking = new EventEmitter<MoneyRequest>();
-
-  /**
-   * If modal is opened thorugh the ts file,
-   * it should be type TempletRef, or it will not work
-   */
+s
   @ViewChild('content', {static: true}) invalidDateModal: TemplateRef<any>;
 
   private validateDate: Validators = (x: FormGroup) => {
@@ -108,7 +104,7 @@ export class MoneyTableComponent implements OnInit, OnDestroy {
       const dateAdded = new Date(newItam.date);
       const exsistingDate = this.moneyArray.length > 0 ? new Date(this.moneyArray[0].date) : null;
       let addedToArray = false;
-      if (dateAdded.getMonth() + 1 === Number(this.lastValueMonth) && exsistingDate != null) {
+      if (dateAdded.getMonth() + 1 === Number(this.cookieService.get('month')) && exsistingDate != null) {
         for (let i = 0; i < this.moneyArray.length && !addedToArray; i++) {
           if (this.moneyArray[i].date.getDate() > dateAdded.getDate()) {
             this.moneyArray = this.addInOrder(newItam, this.moneyArray, i);
@@ -117,7 +113,9 @@ export class MoneyTableComponent implements OnInit, OnDestroy {
       }
       }
       if (!addedToArray) {
+        newItam.date = new Date(newItam.date);
         this.moneyArray.push(newItam);
+        addedToArray = true;
       }
       setTimeout(() => {
         if (addedToArray) {
