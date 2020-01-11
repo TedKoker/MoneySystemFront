@@ -22,7 +22,7 @@ import { NgbModalConfig, NgbModal, NgbModalRef } from '@ng-bootstrap/ng-bootstra
  *  2) Insert the last page that the user visited to the cookies,
  *      and reload it from there in ngOnInit
  */
-export class MoneyTableComponent implements OnInit {
+export class MoneyTableComponent implements OnInit, OnDestroy {
   private moneyArray: MoneyRequest[];
 
   private monthFocused = false;
@@ -96,6 +96,7 @@ export class MoneyTableComponent implements OnInit {
     this.date.get('year').setValue(this.moneyService.year.toString());
     this.lastValueMonth = this.date.get('month').value;
     this.lastValueYear = this.date.get('year').value;
+
     this.moneyService.addedNew.subscribe((newItam: MoneyRequest) => {
       const dateAdded = new Date(newItam.date);
       const exsistingDate = this.moneyArray.length > 0 ? new Date(this.moneyArray[0].date) : null;
@@ -124,10 +125,17 @@ export class MoneyTableComponent implements OnInit {
       this.newItam = newItam;
     });
 
-    this.moneyService.newAddedToDataBase.subscribe((data) => {
+    this.moneyService.newAddedToDataBase.subscribe((data: MoneyRequest) => {
       const index = this.moneyArray.indexOf(this.newItam);
       this.moneyArray[index] = data;
+      this.moneyArray[index].date = new Date(this.moneyArray[index].date);
     });
+  }
+
+  ngOnDestroy() {
+    this.moneyArrayTracking.unsubscribe();
+    this.moneyService.addedNew.unsubscribe();
+    this.moneyService.newAddedToDataBase.unsubscribe();
   }
 
   addInOrder(itam: MoneyRequest, array: Array<MoneyRequest>, index: number) {

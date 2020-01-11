@@ -51,7 +51,6 @@ export class AuthenticationService {
             localStorage.setItem('token', aouthSucsess.token);
             localStorage.setItem('refresh token', aouthSucsess.refreshToken);
         }, (failed) => {
-                console.log('error');
                 this.errors = failed.error.errors;
                 console.log(failed);
             });
@@ -70,14 +69,12 @@ export class AuthenticationService {
             refreshToken: localStorage.getItem('refresh token')
         };
         request = request as AuothSucsess;
-        console.log(request);
         await this.http.post(sourceUrl, request, httpOptions)
             .toPromise()
             .then(
                 (aouthSucsess: AuothSucsess) => {
                     localStorage.setItem('token', aouthSucsess.token);
                     localStorage.setItem('refresh token', aouthSucsess.refreshToken);
-                    console.log('refreshing');
                     return localStorage.getItem('token');
                 },
                 (error) => console.log(error)
@@ -89,7 +86,6 @@ export class AuthenticationService {
         const date = new Date(0);
         date.setUTCSeconds(decoded.exp);
         if (date.valueOf() > new Date().valueOf()) {
-            console.log('token');
             return localStorage.getItem('token');
         } else {
             // await this.test();

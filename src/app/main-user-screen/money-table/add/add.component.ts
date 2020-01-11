@@ -20,7 +20,7 @@ export class AddComponent implements OnInit {
   });
 
   addFormValid: boolean[];
-  
+
   constructor(private moneySrvice: MoneyService) { }
 
   ngOnInit() {
@@ -41,5 +41,6 @@ export class AddComponent implements OnInit {
     } else {
       console.log(this.addForm);
     }
+
   }
 }
